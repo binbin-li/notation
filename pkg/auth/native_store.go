@@ -23,7 +23,7 @@ type nativeAuthStore struct {
 // GetCredentialsStore returns a new credentials store from the settings in the
 // configuration file
 func GetCredentialsStore(registryHostname string) (CredentialStore, error) {
-	configFile, err := LoadConfig()
+	configFile, err := loadConfig()
 	if err != nil {
 		return nil, fmt.Errorf("failed to load config file, error: %v", err)
 	}
@@ -42,6 +42,9 @@ func newNativeAuthStore(helperSuffix string) CredentialStore {
 		programFunc: client.NewShellProgramFunc(name),
 	}
 }
+
+// var for unit testing.
+var loadConfig = LoadConfig
 
 // getConfiguredCredentialStore returns the credential helper configured for the
 // given registry, the default credsStore, or the empty string if neither are
