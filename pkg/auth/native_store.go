@@ -20,16 +20,6 @@ type nativeAuthStore struct {
 	programFunc client.ProgramFunc
 }
 
-// NewNativeAuthStore creates a new native store that uses a remote helper
-// program to manage credentials. Note: it's different from the nativeStore in
-// docker-cli which may fall back to plain text store
-func NewNativeAuthStore(helperSuffix string) CredentialStore {
-	name := remoteCredentialsPrefix + helperSuffix
-	return &nativeAuthStore{
-		programFunc: client.NewShellProgramFunc(name),
-	}
-}
-
 // GetCredentialsStore returns a new credentials store from the settings in the
 // configuration file
 func GetCredentialsStore(registryHostname string) (CredentialStore, error) {
@@ -38,13 +28,20 @@ func GetCredentialsStore(registryHostname string) (CredentialStore, error) {
 		return nil, fmt.Errorf("failed to load config file, error: %v", err)
 	}
 	if helper := getConfiguredCredentialStore(configFile, registryHostname); helper != "" {
-		return newNativeStore(helper), nil
+		return newNativeAuthStore(helper), nil
 	}
 	return nil, fmt.Errorf("could not get the configured credentials store for registry: %s", registryHostname)
 }
 
-// var for unit testing.
-var newNativeStore = NewNativeAuthStore
+// newNativeAuthStore creates a new native store that uses a remote helper
+// program to manage credentials. Note: it's different from the nativeStore in
+// docker-cli which may fall back to plain text store
+func newNativeAuthStore(helperSuffix string) CredentialStore {
+	name := remoteCredentialsPrefix + helperSuffix
+	return &nativeAuthStore{
+		programFunc: client.NewShellProgramFunc(name),
+	}
+}
 
 // getConfiguredCredentialStore returns the credential helper configured for the
 // given registry, the default credsStore, or the empty string if neither are

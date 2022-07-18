@@ -23,13 +23,10 @@ func LoadConfig() (*config.File, error) {
 	if err != nil {
 		return nil, err
 	}
-	if config != nil && containsAuth(config) {
+	if containsAuth(config) {
 		return config, nil
 	}
-	if !containsAuth(config) {
-		return nil, fmt.Errorf("credentials store config is not set up")
-	}
-	return config, nil
+	return nil, fmt.Errorf("credentials store config is not set up")
 }
 
 // loadDockerConfig loads the configuration from the config file under .docker
