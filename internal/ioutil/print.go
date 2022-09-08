@@ -7,6 +7,7 @@ import (
 
 	"github.com/notaryproject/notation-go/config"
 	"github.com/notaryproject/notation-go/plugin/manager"
+	"github.com/notaryproject/notation-go/verification"
 )
 
 func newTabWriter(w io.Writer) *tabwriter.Writer {
@@ -49,6 +50,41 @@ func PrintCertificateMap(w io.Writer, v []config.CertificateReference) error {
 	fmt.Fprintln(tw, "NAME\tPATH\t")
 	for _, cert := range v {
 		fmt.Fprintf(tw, "%s\t%s\t\n", cert.Name, cert.Path)
+	}
+	return tw.Flush()
+}
+
+func PrintPolicyMap(w io.Writer, v []*verification.TrustPolicy) error {
+	tw := newTabWriter(w)
+	fmt.Fprintln(tw, "NAME\tSCOPE\tVERIFICATION_LEVEL\tTRUST_STORE\tTRUSTED_IDENTITY\t")
+	for _, policy := range v {
+		fmt.Fprintf(
+			tw,
+			"%s\t%s\t%+v\t%s\t%s\n",
+			policy.Name,
+			policy.RegistryScopes,
+			policy.SignatureVerification,
+			policy.TrustStores,
+			policy.TrustedIdentities,
+		)
+	}
+	return tw.Flush()
+}
+
+func PrintPolicyNames(w io.Writer, v []*verification.TrustPolicy, header string) error {
+	tw := newTabWriter(w)
+	fmt.Fprintln(tw, header)
+	for _, policy := range v {
+		fmt.Fprintln(tw, policy.Name)
+	}
+	return tw.Flush()
+}
+
+func PrintDeletedPolicyNames(w io.Writer, v []string) error {
+	tw := newTabWriter(w)
+	fmt.Fprintln(tw, "Deleted Policies:")
+	for _, name := range v {
+		fmt.Fprintln(tw, name)
 	}
 	return tw.Flush()
 }

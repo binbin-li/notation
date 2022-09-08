@@ -2,6 +2,8 @@ module github.com/notaryproject/notation
 
 go 1.18
 
+replace github.com/notaryproject/notation-go v0.10.0-alpha.3.0.20220906053403-603af0988a52 => ../notation-go
+
 require (
 	github.com/distribution/distribution/v3 v3.0.0-20220729163034-26163d82560f
 	github.com/docker/docker-credential-helpers v0.6.4
@@ -14,7 +16,10 @@ require (
 )
 
 require (
+	github.com/Azure/go-ntlmssp v0.0.0-20220621081337-cb9428e4ac1e // indirect
 	github.com/fxamacker/cbor/v2 v2.4.0 // indirect
+	github.com/go-asn1-ber/asn1-ber v1.5.4 // indirect
+	github.com/go-ldap/ldap/v3 v3.4.4 // indirect
 	github.com/golang-jwt/jwt/v4 v4.4.2 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/opencontainers/distribution-spec/specs-go v0.0.0-20220620172159-4ab4752c3b86 // indirect
@@ -22,6 +27,7 @@ require (
 	github.com/oras-project/artifacts-spec v1.0.0-rc.2 // indirect
 	github.com/veraison/go-cose v1.0.0-rc.1.0.20220824135457-9d2fab636b83 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
+	golang.org/x/crypto v0.0.0-20220622213112-05595931fe9d // indirect
 	golang.org/x/sync v0.0.0-20220722155255-886fb9371eb4 // indirect
 	golang.org/x/sys v0.0.0-20220731174439-a90be440212d // indirect
 )
